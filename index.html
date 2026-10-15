@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f7ede0" />
+  <meta name="description" content="Maiah's Pies — handmade pies, baked with love. Order your favorites for local pickup." />
+  <title>Maiah's Pies
+  </title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="announcement">Handmade with love <span aria-hidden="true">✦</span> Syracuse, NY pickup only</div>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#home" aria-label="Maiah's Pies, home"><span class="brand-mark">✳</span><span>Maiah's <em>Pies</em></span></a>
+      <nav class="nav-links" aria-label="Main navigation"><a href="#shop">Our Pies</a><a href="#pickup">Pickup Info</a></nav>
+      <button id="cart-toggle" class="cart-button" type="button" aria-label="Open shopping cart">Bag <span id="cart-count" class="cart-count">0</span></button>
+    </div>
+  </header>
+
+  <main id="home">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy"><span class="eyebrow">A LITTLE SLICE OF HAPPINESS</span><h1>Every pie has<br>a <em>story to tell.</em></h1><p>Flaky, buttery crusts. Sweet, cozy fillings. Handmade pies that taste just like home.</p><div class="hero-actions"><a class="btn btn-primary" href="#shop">Shop the pies <span aria-hidden="true">↗</span></a><a class="subtle-link" href="#story">Get to know us →</a></div><div class="hero-footnote">✳ Baked fresh & made for sharing</div></div>
+        <div class="hero-art"><img src="./logo.png" alt="Fresh homemade pie with a golden crust" onerror="this.style.display='none';this.parentElement.classList.add('image-fallback')" />
+      </div>
+      </div>
+    </section>
+
+    <section class="values-strip" aria-label="Why Maiah's Pies"><div class="container values-inner"><span>♡ Made from scratch</span><span>✦ Baked with love</span><span>♧ Perfect for sharing</span><span>☀ Local pickup</span></div></section>
+
+    <section class="shop-section section-pad" id="shop"><div class="container"><div class="section-heading"><div><span class="eyebrow">FROM OUR OVEN TO YOUR TABLE</span><h2>Meet the <em>pies.</em></h2></div><p>A little something sweet for every occasion. Browse our sample menu below.</p></div><div id="product-grid" class="product-grid"></div><p class="menu-note">Sample pie flavors — all full pies are $18 and mini pies are $10. Update the <code>products</code> array in index.html with your real offerings.</p></div></section>
+  
+    <section class="pickup-section section-pad" id="pickup"><div class="container pickup-inner"><div><span class="eyebrow">SIMPLE AS PIE</span><h2>Order online.<br><em>Pick up happy.</em></h2><p>Choose your pies, request a pickup date, and we'll get your order ready. We'll confirm the details with you before it's final.</p></div><div class="steps"><div class="step"><span>01</span><div><h3>Choose your pies</h3><p>Fill your bag with your favorites.</p></div></div><div class="step"><span>02</span><div><h3>Request pickup</h3><p>Tell us when you'd like to stop by.</p></div></div><div class="step"><span>03</span><div><h3>Enjoy every bite</h3><p>We'll confirm availability and pickup details.</p></div></div></div></div></section>
+  </main>
+
+  <footer class="footer"><div class="container footer-inner"><div><a class="brand" href="#home"><span class="brand-mark">✳</span><span>Maiah's <em>Pies</em></span></a><p>Little slices. Big smiles.</p></div><div class="footer-side"><a href="#shop">Shop pies</a><a href="#pickup">Pickup</a><span>© <span id="year"></span> Maiah's Pies</span></div></div></footer>
+
+  <div id="cart-backdrop" class="cart-backdrop" hidden></div>
+  <aside id="cart-drawer" class="cart-drawer" role="dialog" aria-modal="true" aria-labelledby="cart-title" aria-hidden="true">
+    <div class="drawer-header"><div><span class="eyebrow">YOUR SWEET SELECTIONS</span><h2 id="cart-title">Your bag <span>🥧</span></h2></div><button id="cart-close" class="icon-btn" type="button" aria-label="Close cart">×</button></div>
+    <div id="cart-items" class="cart-items"></div>
+    <div class="drawer-footer"><div class="subtotal-row"><strong>Subtotal</strong><strong id="cart-subtotal">$0.00</strong></div><p class="small-note">Taxes (if applicable) and final pickup details will be confirmed separately.</p><button id="checkout-open" type="button" class="btn btn-primary full-width">Request pickup order →</button></div>
+  </aside>
+
+  <dialog id="checkout-dialog" class="checkout-dialog"><form id="checkout-form" class="checkout-form"><div class="checkout-top"><div><span class="eyebrow">ALMOST PIE TIME</span><h2>Pickup request</h2></div><button class="icon-btn" id="checkout-close" type="button" aria-label="Close checkout">×</button></div><p class="checkout-intro">Send your pickup request directly to Maiah's Pies. Your order is <strong>not confirmed</strong> until we respond.</p><label>Your name<input required name="name" type="text" autocomplete="name" placeholder="First and last name" maxlength="100" /></label><label>Email address<input required name="email" type="email" autocomplete="email" placeholder="you@example.com" /></label><label>Phone number<input required name="phone" type="tel" autocomplete="tel" placeholder="(555) 555-5555" /></label><label>Preferred pickup date<input required name="date" id="pickup-date" type="date" /></label><label>Payment preference<select name="payment" required><option value="Pay at pickup">Pay at pickup</option><option value="Online payment requested (arranged after confirmation)">Request online payment after confirmation</option></select></label><label>Order notes (optional)<textarea name="notes" rows="3" maxlength="500" placeholder="Anything we should know?"></textarea></label><div id="order-summary" class="order-summary"></div><button class="btn btn-primary full-width" type="submit">Submit pickup request →</button><p id="checkout-status" class="small-note" role="status" aria-live="polite">No payment is taken on this website. We will confirm your request and arrange payment separately.</p></form></dialog>
+
+  <script>
+    // QUICK START: Change this to the email address where you want to receive orders.
+    const ORDER_EMAIL = 'maiahpiraino@gmail.com';
+
+    // SAMPLE MENU: Change names, descriptions, and photos to your own.
+    // Every pie has two sizes; change these amounts to update all prices.
+    const pieSizes = { full: { label: "Full", price: 18 }, mini: { label: "Mini", price: 10 } };
+    const products = [
+      { id: 'apple', name: 'Classic Apple', tag: 'BESTSELLER', emoji: '🍎', description: 'Warm cinnamon apples tucked into a golden, buttery crust.', image: './apple.png' },
+      { id: 'cherry', name: 'Sweet Cherry', tag: 'FAN FAVORITE', emoji: '🍒', description: 'Sweet-tart cherries with a beautifully flaky lattice top.', image: './cherry.png' },
+      { id: 'pecan', name: 'Brown Sugar Pecan', tag: 'COZY CLASSIC', emoji: '🥜', description: 'Rich brown sugar filling with toasted, crunchy pecans.', image: './pecan.png' },
+      { id: 'blueberry', name: 'Blueberry Bliss', tag: 'SWEET & FRUITY', emoji: '🫐', description: 'Juicy blueberries baked until bubbly and delicious.', image: './blueberry.png' },
+      { id: 'pumpkin', name: 'Pumpkin Spice', tag: 'FALL FAVORITE', emoji: '🎃', description: 'Smooth pumpkin filling with warm spices in a flaky crust.', image: './pumpkin.png' },
+      { id: 'chocolate', name: 'Peanut Butter Chocolate', tag: 'DECADENT', emoji: '🍫', description: 'Rich chocolate and peanut butter filling.', image: './chocolate.png' },
+      { id: 'strawberry', name: 'Strawberry', tag: 'SWEET', emoji: '🍓', description: 'Fresh strawberries in a buttery crust.', image: './strawberry.png' },
+
+    
+    ]; 
+
+    const money = n => new Intl.NumberFormat('en-US', {style:'currency',currency:'USD'}).format(n); 
+    const $ = id => document.getElementById(id);
+    const storageKey = 'maiahs-pies-cart-v2';
+    let cart = {};
+    try { cart = JSON.parse(localStorage.getItem(storageKey) || '{}') || {}; } catch { cart = {}; }
+    // Keys combine pie ID and size so customers can order both versions.
+    const keyFor = (id, size) => `${id}:${size}`;
+    const decodeKey = key => { const [id, size] = key.split(':'); return { id, size }; };
+    cart = Object.fromEntries(Object.entries(cart).filter(([key, qty]) => {
+      const { id, size } = decodeKey(key);
+      return products.some(p => p.id === id) && pieSizes[size] && Number.isInteger(qty) && qty > 0 && qty < 100;
+    }));
+
+    function productMarkup(p) { return `<article class="product-card"><div class="product-photo"><img src="${p.image}" alt="${p.name} pie" loading="lazy" onerror="this.style.display='none';this.parentElement.classList.add('photo-fallback')"/><span class="photo-emoji">${p.emoji}</span><span class="product-tag">${p.tag}</span></div><div class="product-info"><div class="product-title"><h3>${p.name}</h3></div><p>${p.description}</p><label class="pie-size-label" for="size-${p.id}">Choose a size</label><select class="pie-size-select" id="size-${p.id}" aria-label="Size for ${p.name}"><option value="full">Full pie — ${money(pieSizes.full.price)}</option><option value="mini">Mini pie — ${money(pieSizes.mini.price)}</option></select><button class="add-button" type="button" data-add="${p.id}"><span>ADD TO BAG</span><span aria-hidden="true">＋</span></button></div></article>`; }
+    $('product-grid').innerHTML = products.map(productMarkup).join('');
+    const items = () => Object.entries(cart).map(([key,qty]) => {
+      const {id,size} = decodeKey(key);
+      const product = products.find(p => p.id === id);
+      return {...product, size, sizeLabel:pieSizes[size].label, price:pieSizes[size].price, key, qty};
+    });
+    const total = () => items().reduce((sum,p) => sum + p.price*p.qty,0);
+    function saveCart(){localStorage.setItem(storageKey,JSON.stringify(cart));renderCart();}
+    function renderCart(){
+      const list = items();
+      $('cart-count').textContent=list.reduce((n,p)=>n+p.qty,0);
+      $('cart-subtotal').textContent=money(total());
+      $('checkout-open').disabled=!list.length;
+      $('cart-items').innerHTML = list.length ? list.map(p=>`<div class="cart-item"><span class="cart-item-emoji">${p.emoji}</span><div class="cart-item-detail"><h3>${p.name}</h3><p>${p.sizeLabel} pie · ${money(p.price)} each</p><div class="qty-controls"><button type="button" data-change="${p.key}" data-delta="-1" aria-label="Remove one ${p.sizeLabel} ${p.name}">−</button><span>${p.qty}</span><button type="button" data-change="${p.key}" data-delta="1" aria-label="Add one ${p.sizeLabel} ${p.name}">+</button></div></div><strong>${money(p.price*p.qty)}</strong></div>`).join('') : '<div class="empty-cart"><span>🥧</span><h3>Your bag is empty</h3><p>There’s always room for pie!</p><button id="continue-shopping" class="btn btn-outline" type="button">Shop our pies →</button></div>';
+    }
+    function toggleCart(open){ $('cart-drawer').classList.toggle('open',open); $('cart-drawer').setAttribute('aria-hidden',String(!open)); $('cart-backdrop').hidden=!open; document.body.classList.toggle('drawer-open',open); if(open)$('cart-close').focus(); }
+    $('product-grid').addEventListener('click',e=>{const btn=e.target.closest('[data-add]');if(!btn)return; const id=btn.dataset.add;const size=btn.closest('.product-card').querySelector('.pie-size-select').value;const key=keyFor(id,size);cart[key]=Math.min((cart[key]||0)+1,99);saveCart();toggleCart(true);});
+    $('cart-items').addEventListener('click',e=>{if(e.target.closest('#continue-shopping')){toggleCart(false);$('shop').scrollIntoView({behavior:'smooth'});return;}const btn=e.target.closest('[data-change]');if(!btn)return;const key=btn.dataset.change;cart[key]=Math.max(0,Math.min((cart[key]||0)+Number(btn.dataset.delta),99));if(!cart[key])delete cart[key];saveCart();});
+    $('cart-toggle').addEventListener('click',()=>toggleCart(true));$('cart-close').addEventListener('click',()=>toggleCart(false));$('cart-backdrop').addEventListener('click',()=>toggleCart(false));
+    document.addEventListener('keydown',e=>{if(e.key==='Escape')toggleCart(false);});
+    $('checkout-open').addEventListener('click',()=>{if(!items().length)return;toggleCart(false);$('order-summary').textContent=`${items().map(p=>`${p.qty} × ${p.sizeLabel} ${p.name}`).join(' · ')} — ${money(total())}`;$('checkout-dialog').showModal();});
+    $('checkout-close').addEventListener('click',()=>$('checkout-dialog').close());
+    $('checkout-dialog').addEventListener('click',e=>{if(e.target===$('checkout-dialog'))$('checkout-dialog').close();});
+    const today = new Date(); const localToday = [today.getFullYear(),String(today.getMonth()+1).padStart(2,'0'),String(today.getDate()).padStart(2,'0')].join('-'); $('pickup-date').min=localToday;
+    // FormSubmit relays order requests to email without requiring the customer's mail app.
+    // IMPORTANT: The owner must approve FormSubmit's activation email after the first test submission.
+    $('checkout-form').addEventListener('submit',async e=>{
+      e.preventDefault();
+      if (!items().length) return;
+      const form = e.currentTarget;
+      const submitButton = form.querySelector('button[type="submit"]');
+      const status = $('checkout-status');
+      const data = new FormData(form);
+      const orderLines = items().map(p => `${p.qty} x ${p.sizeLabel} ${p.name} - ${money(p.price*p.qty)}`);
+      const payload = {
+        _subject: `New Maiah's Pies pickup request - ${data.get('name')}`,
+        _template: 'table',
+        _honey: '',
+        name: String(data.get('name') || ''),
+        email: String(data.get('email') || ''),
+        phone: String(data.get('phone') || ''),
+        preferred_pickup_date: String(data.get('date') || ''),
+        payment_preference: String(data.get('payment') || ''),
+        order: orderLines.join('\n'),
+        subtotal: money(total()),
+        notes: String(data.get('notes') || 'None') || 'None'
+      };
+      submitButton.disabled = true;
+      submitButton.textContent = 'Sending request…';
+      status.textContent = 'Sending your pickup request…';
+      try {
+        const response = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(ORDER_EMAIL)}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await response.json();
+        if (!response.ok || result.success === false || result.success === 'false') {
+          throw new Error(result.message || 'Submission failed');
+        }
+        form.reset();
+        cart = {};
+        saveCart();
+        $('checkout-dialog').close();
+        alert('Your pickup request was submitted! Maiah’s Pies will contact you to confirm availability and payment. Your order is not confirmed yet.');
+        status.textContent = 'No payment is taken on this website. We will confirm your request and arrange payment separately.';
+      } catch (error) {
+        status.textContent = 'We could not submit your request. Please check your connection and try again. No order was confirmed.';
+        console.error('Order submission failed:', error);
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Submit pickup request →';
+      }
+    });
+    $('year').textContent=new Date().getFullYear(); renderCart();
+  </script>
+</body>
+</html>

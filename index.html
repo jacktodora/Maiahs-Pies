@@ -47,11 +47,23 @@
     <div class="drawer-footer"><div class="subtotal-row"><strong>Subtotal</strong><strong id="cart-subtotal">$0.00</strong></div><p class="small-note">Taxes (if applicable) and final pickup details will be confirmed separately.</p><button id="checkout-open" type="button" class="btn btn-primary full-width">Request pickup order →</button></div>
   </aside>
 
-  <dialog id="checkout-dialog" class="checkout-dialog"><form id="checkout-form" class="checkout-form"><div class="checkout-top"><div><span class="eyebrow">ALMOST PIE TIME</span><h2>Pickup request</h2></div><button class="icon-btn" id="checkout-close" type="button" aria-label="Close checkout">×</button></div><p class="checkout-intro">Send your pickup request directly to Maiah's Pies. Your order is <strong>not confirmed</strong> until we respond.</p><label>Your name<input required name="name" type="text" autocomplete="name" placeholder="First and last name" maxlength="100" /></label><label>Email address<input required name="email" type="email" autocomplete="email" placeholder="you@example.com" /></label><label>Phone number<input required name="phone" type="tel" autocomplete="tel" placeholder="(555) 555-5555" /></label><label>Preferred pickup date<input required name="date" id="pickup-date" type="date" /></label><label>Payment preference<select name="payment" required><option value="Pay at pickup">Pay at pickup</option><option value="Online payment requested (arranged after confirmation)">Request online payment after confirmation</option></select></label><label>Allergies (optional)<textarea name="allergies" rows="3" maxlength="500" placeholder="Do you have any allergies we should know about?"></textarea></label><label>Order notes (optional)<textarea name="notes" rows="3" maxlength="500" placeholder="Anything we should know?"></textarea></label><div id="order-summary" class="order-summary"></div><button class="btn btn-primary full-width" type="submit">Submit pickup request →</button><p id="checkout-status" class="small-note" role="status" aria-live="polite">No payment is taken on this website. We will confirm your request and arrange payment separately.</p></form></dialog>
+  <dialog id="checkout-dialog" class="checkout-dialog"><form id="checkout-form" class="checkout-form"><div class="checkout-top"><div><span class="eyebrow">ALMOST PIE TIME</span><h2>Pickup request</h2></div><button class="icon-btn" id="checkout-close" type="button" aria-label="Close checkout">×</button></div><p class="checkout-intro">Send your pickup request directly to Maiah's Pies. Your order is <strong>not confirmed</strong> until we respond.</p><label>Your name<input required name="name" type="text" autocomplete="name" placeholder="First and last name" maxlength="100" /></label><label>Email address<input required name="email" type="email" autocomplete="email" placeholder="you@example.com" /></label><label>Phone number<input required name="phone" type="tel" autocomplete="tel" placeholder="(555) 555-5555" /></label><label>Preferred pickup date<input required name="date" id="pickup-date" type="date" /></label><label>Payment preference<select name="payment" required><option value="Pay at pickup">Pay at pickup</option><option value="Pay with Venmo after confirmation">Pay with Venmo (after confirmation)</option></select></label><label>Allergies (optional)<textarea name="allergies" rows="3" maxlength="500" placeholder="Do you have any allergies we should know about?"></textarea></label><label>Order notes (optional)<textarea name="notes" rows="3" maxlength="500" placeholder="Anything we should know?"></textarea></label><div id="order-summary" class="order-summary"></div><button class="btn btn-primary full-width" type="submit">Submit pickup request →</button><p id="checkout-status" class="small-note" role="status" aria-live="polite">No payment is taken on this website. Wait for order confirmation before paying through Venmo.</p></form></dialog>
+
+  <dialog id="order-success-dialog" class="checkout-dialog">
+    <div class="checkout-form">
+      <div class="checkout-top"><div><span class="eyebrow">REQUEST SENT</span><h2>Thank you!</h2></div><button id="success-close" class="icon-btn" type="button" aria-label="Close">×</button></div>
+      <p>Your pickup request was sent. <strong>Wait until Maiah's Pies confirms your order and final total before sending payment.</strong></p>
+      <p id="success-summary" class="order-summary"></p>
+      <a id="venmo-pay-link" class="btn btn-primary full-width" href="https://venmo.com/u/maiah-Piraino" target="_blank" rel="noopener noreferrer" hidden>Open @maiah-Piraino on Venmo ↗</a>
+      <p id="venmo-help" class="small-note" hidden>Venmo opens separately. Enter the confirmed amount yourself and verify the recipient is <strong>@maiah-Piraino</strong> before paying. Payment is not automatically tracked by this website.</p>
+      <button id="success-done" class="btn btn-outline full-width" type="button">Done</button>
+    </div>
+  </dialog>
 
   <script>
     // QUICK START: Change this to the email address where you want to receive orders.
     const ORDER_EMAIL = 'maiahpiraino@gmail.com';
+    const VENMO_URL = 'https://venmo.com/u/maiah-Piraino';
 
     // SAMPLE MENU: Change names, descriptions, and photos to your own.
     // Every pie has two sizes; change these amounts to update all prices.
@@ -104,6 +116,9 @@
     document.addEventListener('keydown',e=>{if(e.key==='Escape')toggleCart(false);});
     $('checkout-open').addEventListener('click',()=>{if(!items().length)return;toggleCart(false);$('order-summary').textContent=`${items().map(p=>`${p.qty} × ${p.sizeLabel} ${p.name}`).join(' · ')} — ${money(total())}`;$('checkout-dialog').showModal();});
     $('checkout-close').addEventListener('click',()=>$('checkout-dialog').close());
+    $('success-close').addEventListener('click',()=>$('order-success-dialog').close());
+    $('success-done').addEventListener('click',()=>$('order-success-dialog').close());
+    $('venmo-pay-link').href = VENMO_URL;
     $('checkout-dialog').addEventListener('click',e=>{if(e.target===$('checkout-dialog'))$('checkout-dialog').close();});
     const today = new Date(); const localToday = [today.getFullYear(),String(today.getMonth()+1).padStart(2,'0'),String(today.getDate()).padStart(2,'0')].join('-'); $('pickup-date').min=localToday;
     // FormSubmit relays order requests to email without requiring the customer's mail app.
@@ -142,12 +157,16 @@
         if (!response.ok || result.success === false || result.success === 'false') {
           throw new Error(result.message || 'Submission failed');
         }
+        const venmoSelected = data.get('payment') === 'Pay with Venmo after confirmation';
+        $('success-summary').textContent = `Requested pies: ${orderLines.join(' · ')} | Estimated subtotal: ${money(total())}`;
+        $('venmo-pay-link').hidden = !venmoSelected;
+        $('venmo-help').hidden = !venmoSelected;
         form.reset();
         cart = {};
         saveCart();
         $('checkout-dialog').close();
-        alert('Your pickup request was submitted! Maiah’s Pies will contact you to confirm availability and payment. Your order is not confirmed yet.');
-        status.textContent = 'No payment is taken on this website. We will confirm your request and arrange payment separately.';
+        $('order-success-dialog').showModal();
+        status.textContent = 'No payment is taken on this website. Wait for order confirmation before paying through Venmo.';
       } catch (error) {
         status.textContent = 'We could not submit your request. Please check your connection and try again. No order was confirmed.';
         console.error('Order submission failed:', error);
